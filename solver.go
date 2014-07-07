@@ -125,7 +125,7 @@ func Evaluate(id int, jobs <-chan dataJobs, results chan<- dataResults) {
 						// below trying to reflect that reaching
 						// to a key within one finger also have different
 						// efforts. so D+F should be greater then Q+B
-						if f != prevFinger {
+						if f != prevFinger { //got nothing for same finger
 							iRepScore = iRepScore + config.FinKeyWeight[config.FingerKey{prevFinger, key}]
 							iRepScore = iRepScore + config.FinKeyWeight[config.FingerKey{f, key}]
 						}
@@ -477,7 +477,7 @@ func main() {
 				keyAction[key] = actName
 			}
 		}
-		svg.DrawKeys(keyAction, "keyboard"+m+".svg")
+		svg.DrawKeys(keyAction, "keyboard_"+m+".svg")
 	}
 
 }
