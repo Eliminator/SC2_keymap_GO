@@ -1,0 +1,407 @@
+{
+    "Users": ["UserA","UserB"],
+    "Groups": ["GroupA"],
+	"Fin": ["fP", "fR", "fM", "fI"],
+	"FinFinWeight": [
+		["fP", "fR", "4"], ["fR", "fI", "8"],
+		["fR", "fP", "4"], ["fI", "fR", "6"],
+		["fP", "fM", "4"], ["fR", "fT", "4"],
+		["fM", "fP", "4"], ["fT", "fR", "4"],
+		["fP", "fI", "6"], ["fM", "fI", "10"],
+		["fI", "fP", "6"], ["fI", "fM", "10"],
+		["fP", "fT", "6"], ["fM", "fT", "6"],
+		["fT", "fP", "6"], ["fT", "fM", "6"],
+		["fR", "fM", "6"], ["fI", "fT", "6"],
+		["fM", "fR", "4"], ["fT", "fI", "6"],
+		["fP", "fP", "0"], ["fR", "fR", "0"],
+		["fM", "fM", "0"], ["fI", "fI", "0"],
+		["fT", "fT", "0"]
+	],
+	"FinKeys": {
+		"fP":["Z","A","Q","1","Slash", "Escape"], 
+		"fR":["X","S","W","2"], 
+		"fM":["C","D","E","3"], 
+		"fI":["V","F","R","4","5","T","G","B", "Delete", "Tab", "Backspace"]
+	},
+	"FinKeyWeight":[
+		["fP", "Z", "8"], 
+		["fP", "Q", "5"], 
+		["fP", "1", "3"], 
+		["fP", "Escape", "4"], 
+		["fP", "Slash", "3"], 
+		["fP", "A", "10"], 
+		["fR", "X", "8"], 
+		["fR", "S", "10"], 
+		["fR", "2", "3"], 
+		["fR", "W", "8"], 
+		["fM", "3", "6"], 
+		["fM", "D", "10"], 
+		["fM", "C", "8"], 
+		["fM", "E", "8"], 
+		["fI", "V", "8"], 
+		["fI", "F", "10"],
+		["fI", "R", "8"], 
+		["fI", "4", "6"], 
+		["fI", "B", "4"], 
+		["fI", "G", "6"], 
+		["fI", "T", "8"], 
+		["fI", "5", "4"], 
+		["fI", "Backspace", "2"], 
+		["fI", "Tab", "3"], 
+		["fI", "Delete", "3"]
+	],
+	"ModFinger": {
+		"sh": "fT", 
+		"cn": "fT", 
+		"no": "fNone", 
+		"cs": "fT", 
+		"al": "fP"
+	},
+	"ModScore": {"no": 0, "sh": -1, "cs": -3, "al": -4, "cn": -2},
+	"Actions": [
+        "Attack",
+        "BurrowUp",
+        "Baneling",
+        "BuildCreepTumor",
+        "MoveHoldPosition",
+        "ControlGroupRecall0",
+        "ControlGroupRecall1",
+        "ControlGroupRecall2",
+        "ControlGroupRecall3",
+        "ControlGroupRecall4",
+        "ControlGroupRecall5",
+        "ControlGroupRecall6",
+        "ControlGroupRecall7",
+        "ControlGroupRecall8",
+        "ControlGroupRecall9",
+        "ControlGroupAppend0",
+        "ControlGroupAppend1",
+        "ControlGroupAppend2",
+        "ControlGroupAppend3",
+        "ControlGroupAppend4",
+        "ControlGroupAppend5",
+        "ControlGroupAppend6",
+        "ControlGroupAppend7",
+        "ControlGroupAppend8",
+        "ControlGroupAppend9",
+        "ControlGroupAssign0",
+        "ControlGroupAssign1",
+        "ControlGroupAssign2",
+        "ControlGroupAssign3",
+        "ControlGroupAssign4",
+        "ControlGroupAssign5",
+        "ControlGroupAssign6",
+        "ControlGroupAssign7",
+        "ControlGroupAssign8",
+        "ControlGroupAssign9",
+        "CameraSave0",
+        "CameraSave1",
+        "CameraSave2",
+        "CameraSave3",
+        "CameraSave4",
+        "CameraSave5",
+        "CameraSave6",
+        "CameraSave7",
+        "CameraView0",
+        "CameraView1",
+        "CameraView2",
+        "CameraView3",
+        "CameraView4",
+        "CameraView5",
+        "CameraView6",
+        "CameraView7",
+        "BurrowDown",
+        "MovePatrol",
+        "Stop",
+        "ArmySelect",
+        "Cancel"
+    ],
+    "FixedModsGroups": {
+        "al": [
+            "CameraSave0",
+            "CameraSave1",
+            "CameraSave2",
+            "CameraSave3",
+            "CameraSave4",
+            "CameraSave5"
+        ],
+        "sh": [
+            "CameraView0",
+            "CameraView1",
+            "CameraView2",
+            "CameraView3",
+            "CameraView4",
+            "CameraView5"
+        ],
+        "cn": [
+            "ControlGroupAppend0",
+            "ControlGroupAppend1",
+            "ControlGroupAppend2",
+            "ControlGroupAppend3",
+            "ControlGroupAppend4",
+            "ControlGroupAppend5",
+            "ControlGroupAppend6",
+            "ControlGroupAppend7",
+            "ControlGroupAppend8",
+            "ControlGroupAppend9",
+            "CameraSave6",
+            "CameraSave7",
+            "CameraView6",
+            "CameraView7"
+        ],
+        "cs": [
+            "ControlGroupAssign0",
+            "ControlGroupAssign1",
+            "ControlGroupAssign2",
+            "ControlGroupAssign3",
+            "ControlGroupAssign4",
+            "ControlGroupAssign5",
+            "ControlGroupAssign6",
+            "ControlGroupAssign7",
+            "ControlGroupAssign8",
+            "ControlGroupAssign9"
+        ],
+        "no": [
+		    "Attack",
+            "MoveHoldPosition",
+            "MovePatrol",
+            "Stop",
+            "Cancel",
+            "BurrowDown",
+            "BurrowUp",
+            "Baneling",
+            "BuildCreepTumor",
+            "ArmySelect",
+            "ControlGroupRecall0",
+            "ControlGroupRecall1",
+            "ControlGroupRecall2",
+            "ControlGroupRecall3",
+            "ControlGroupRecall4",
+            "ControlGroupRecall5",
+            "ControlGroupRecall6",
+            "ControlGroupRecall7",
+            "ControlGroupRecall8",
+            "ControlGroupRecall9"
+        ]
+    },
+    "SameModGroups": [
+        [
+            "CameraView6",
+            "CameraView7"
+        ],
+        [
+            "CameraSave6",
+            "CameraSave7"
+        ],
+        [
+            "ControlGroupRecall0",
+            "BurrowDown",
+            "Attack",
+            "MoveHoldPosition",
+            "MovePatrol",
+            "Stop",
+            "Cancel"
+        ],
+        [
+            "ControlGroupRecall0",
+            "Attack",
+            "BurrowDown",
+            "BurrowUp",
+            "Baneling",
+            "BuildCreepTumor"
+        ],
+        [
+            "ControlGroupAppend0",
+            "ControlGroupAppend1",
+            "ControlGroupAppend2",
+            "ControlGroupAppend3",
+            "ControlGroupAppend4",
+            "ControlGroupAppend5",
+            "ControlGroupAppend6",
+            "ControlGroupAppend7"
+        ],
+        [
+            "ControlGroupAssign0",
+            "ControlGroupAssign1",
+            "ControlGroupAssign2",
+            "ControlGroupAssign3",
+            "ControlGroupAssign4",
+            "ControlGroupAssign5",
+            "ControlGroupAssign6",
+            "ControlGroupAssign7"
+        ],
+        [
+            "ControlGroupRecall0",
+            "ControlGroupRecall1",
+            "ControlGroupRecall2",
+            "ControlGroupRecall3",
+            "ControlGroupRecall4",
+            "ControlGroupRecall5",
+            "ControlGroupRecall6",
+            "ControlGroupRecall7"
+        ],
+        [
+            "CameraView0",
+            "CameraView1",
+            "CameraView2",
+            "CameraView3",
+            "CameraView4",
+            "CameraView5"
+        ],
+        [
+            "CameraSave0",
+            "CameraSave1",
+            "CameraSave2",
+            "CameraSave3",
+            "CameraSave4",
+            "CameraSave5"
+        ]
+    ],
+    "SameKeyGroups": [
+        [
+            "ControlGroupRecall0",
+            "ControlGroupAppend0",
+            "ControlGroupAssign0"
+        ],
+        [
+            "ControlGroupRecall1",
+            "ControlGroupAppend1",
+            "ControlGroupAssign1"
+        ],
+        [
+            "ControlGroupRecall2",
+            "ControlGroupAppend2",
+            "ControlGroupAssign2"
+        ],
+        [
+            "ControlGroupRecall3",
+            "ControlGroupAppend3",
+            "ControlGroupAssign3"
+        ],
+        [
+            "ControlGroupRecall4",
+            "ControlGroupAppend4",
+            "ControlGroupAssign4"
+        ],
+        [
+            "ControlGroupRecall5",
+            "ControlGroupAppend5",
+            "ControlGroupAssign5"
+        ],
+        [
+            "ControlGroupRecall6",
+            "ControlGroupAppend6",
+            "ControlGroupAssign6"
+        ],
+        [
+            "ControlGroupRecall7",
+            "ControlGroupAppend7",
+            "ControlGroupAssign7"
+        ],
+        [
+            "ControlGroupRecall8",
+            "ControlGroupAppend8",
+            "ControlGroupAssign8"
+        ],
+        [
+            "ControlGroupRecall9",
+            "ControlGroupAppend9",
+            "ControlGroupAssign9"
+        ],
+        [
+            "CameraView0",
+            "CameraSave0"
+        ],
+        [
+            "CameraView1",
+            "CameraSave1"
+        ],
+        [
+            "CameraView2",
+            "CameraSave2"
+        ],
+        [
+            "CameraView3",
+            "CameraSave3"
+        ],
+        [
+            "CameraView4",
+            "CameraSave4"
+        ],
+        [
+            "CameraView5",
+            "CameraSave5"
+        ]
+    ],
+    "DiffKeyGroups": [
+	     [
+            "CameraView0",
+            "CameraView1",
+            "CameraView2",
+            "CameraView3",
+            "CameraView4",
+            "CameraView5",
+		    "Attack",
+            "MoveHoldPosition",
+            "MovePatrol",
+            "Stop",
+            "Cancel",
+            "BurrowDown",
+            "BurrowUp",
+            "Baneling",
+            "BuildCreepTumor"
+        ],
+        [
+            "CameraView0",
+            "CameraView1",
+            "CameraView2",
+            "CameraView3",
+            "CameraView4",
+            "CameraView5",
+            "CameraView6",
+			"CameraView7"	
+        ],
+        [
+            "CameraSave0",
+            "CameraSave1",
+            "CameraSave2",
+            "CameraSave3",
+            "CameraSave4",
+            "CameraSave5",
+            "CameraSave6",
+            "CameraSave7"
+        ]
+    ],
+	"SeqOfActions": [
+        [
+            "ControlGroupRecall3", "Attack", "ControlGroupRecall4", "BuildCreepTumor"
+        ],
+        [
+            "ControlGroupRecall4", "BuildCreepTumor", "ControlGroupRecall3", "Attack"
+        ],
+        [
+            "ControlGroupRecall5", "Attack", "ControlGroupRecall6", "BuildCreepTumor"
+        ],
+        [
+            "ControlGroupRecall6", "BuildCreepTumor", "ControlGroupRecall5", "Attack"
+        ],
+        [
+            "ControlGroupRecall3", "Attack", "ControlGroupRecall5", "Attack"
+        ],		
+        [
+            "ControlGroupRecall5", "Attack", "ControlGroupRecall3", "Attack"
+        ],	
+        [
+            "ControlGroupRecall4", "BurrowUp", "Attack", "BurrowDown"
+        ],
+        [
+            "ControlGroupRecall6", "BurrowUp", "BuildCreepTumor", "BurrowDown"
+        ],
+        [
+            "CameraView6", "BuildCreepTumor", "CameraSave6", "ControlGroupRecall3"
+        ],
+        [
+            "CameraView7", "BuildCreepTumor", "CameraSave7", "ControlGroupRecall4"
+        ]
+    ]			
+}
