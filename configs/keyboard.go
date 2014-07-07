@@ -89,7 +89,7 @@ func init() {
 	//Fin = make([]string)
 	fmt.Println("Init configs")
 
-	file, _ := os.Open("conf.json")
+	file, _ := os.Open("configs\\conf.json")
 	decoder := json.NewDecoder(file)
 	config := Configuration{}
 	err := decoder.Decode(&config)

@@ -130,7 +130,7 @@ func SvgFileSave(svg *Svg, filename string) error {
 }
 
 func DrawKeys(keyAction map[string]string, filename string) {
-	svg, _ := SvgFileParse("keyboard.svg")
+	svg, _ := SvgFileParse("configs\\keyboard.svg")
 
 	//var textLayer *SvgG
 	var iconLayer *SvgG
@@ -196,7 +196,7 @@ func DrawKeys(keyAction map[string]string, filename string) {
 func init() {
 	fmt.Println("Init svgdraw")
 
-	file, _ := os.Open("svg.json")
+	file, _ := os.Open("configs\\svg.json")
 	decoder := json.NewDecoder(file)
 	config = Configuration{}
 	err := decoder.Decode(&config)
