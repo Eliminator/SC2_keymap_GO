@@ -3,3 +3,4 @@ __pycache__/
 *.py[cod]
 *.exe
 keyboard_*
+solver_linux_*

@@ -1,3 +1,3 @@
 SET GOARCH=amd64
 SET GOOS=linux
-go build solver.go 
+go build -o solver_%GOOS%_%GOARCH% solver.go 
