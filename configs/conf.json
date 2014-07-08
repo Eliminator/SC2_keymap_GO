@@ -334,13 +334,30 @@
         ]
     ],
     "DiffKeyGroups": [
-	     [
+		[
             "CameraView0",
             "CameraView1",
             "CameraView2",
             "CameraView3",
             "CameraView4",
             "CameraView5",
+		    "Attack",
+            "MoveHoldPosition",
+            "MovePatrol",
+            "Stop",
+            "Cancel",
+            "BurrowDown",
+            "BurrowUp",
+            "Baneling",
+            "BuildCreepTumor"
+        ],
+		[
+            "CameraSave0",
+            "CameraSave1",
+            "CameraSave2",
+            "CameraSave3",
+            "CameraSave4",
+            "CameraSave5",
 		    "Attack",
             "MoveHoldPosition",
             "MovePatrol",

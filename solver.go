@@ -98,8 +98,8 @@ func Evaluate(id int, jobs <-chan dataJobs, results chan<- dataResults) {
 		explain := j.explain
 		sum := 0
 		aksLen := len(lActKeysState)
-
-		for ai, ki := range lActKeysState {
+		for ai := 0; ai < aksLen; ai++ {
+			ki := lActKeysState[ai]
 			key := config.AllKeys[ki]
 			f := config.KeyFinger[key]
 			iFingerScore := config.FinKeyWeight[config.FingerKey{f, key}]
@@ -111,11 +111,14 @@ func Evaluate(id int, jobs <-chan dataJobs, results chan<- dataResults) {
 		if explain {
 			fmt.Println("ater FinKeyWeight sum = ", sum)
 		}
-		for _, seq := range config.SeqOfActionsIndexed {
+
+		for si := 0; si < len(config.SeqOfActionsIndexed); si++ {
+			seq := config.SeqOfActionsIndexed[si]
 			prevFinger := config.Finger("nil")
-			for _, ai := range seq {
-				if ai < aksLen {
-					key := config.AllKeys[lActKeysState[ai]]
+			for ai := 0; ai < len(seq); ai++ {
+				action := seq[ai]
+				if action < aksLen {
+					key := config.AllKeys[lActKeysState[action]]
 					f := config.KeyFinger[key]
 
 					iRepScore := 0
@@ -154,101 +157,45 @@ func Evaluate(id int, jobs <-chan dataJobs, results chan<- dataResults) {
 	}
 }
 
-//func Evaluate(lActKeysState []config.Key) int {
-//	sum := 0
-//	aksLen := len(lActKeysState)
-
-//	for _, group := range config.ActionsGroupsIndexed {
-//		prevMod := "nil"
-//		for _, ai := range group {
-//			if ai < aksLen {
-//				key := lActKeysState[ai]
-//				m := key.Mod
-//				if prevMod == "nil" {
-//					prevMod = m
-//				}
-//				if prevMod != m {
-//					return 0
-//				}
-//				prevMod = m
-//			}
-//		}
-//	}
-
-//	for _, group := range config.SameKeyGroupsIndexed {
-//		prevKey := "nil"
-//		for _, ai := range group {
-//			if ai < aksLen {
-//				key := lActKeysState[ai]
-//				k := key.Key
-//				if prevKey == "nil" {
-//					prevKey = k
-//				}
-//				if prevKey != k {
-//					return 0
-//				}
-//				prevKey = k
-//			}
-//		}
-//	}
-
-//	for _, key := range lActKeysState {
-//		f := config.KeyFinger[key]
-//		iFingerScore := config.FinKeyWeight[config.FingerKey{f, key}]
-//		sum = sum + iFingerScore
-//	}
-
-//	for _, seq := range config.SeqOfActionsIndexed {
-//		prevFinger := config.Finger("nil")
-//		for _, ai := range seq {
-//			if ai < aksLen {
-//				key := lActKeysState[ai]
-//				f := config.KeyFinger[key]
-//				iFingerScore := config.FinKeyWeight[config.FingerKey{f, key}]
-//				iRepScore := 0
-//				if prevFinger != config.Finger("nil") {
-//					finfin := config.FingerFinger{string(prevFinger), string(f)}
-//					iRepScore = config.FinFinWeight[finfin]
-//				}
-//				prevFinger = f
-//				sum = sum + iFingerScore + iRepScore
-//			}
-//		}
-//		fmt.Println(seq, prevFinger)
-//	}
-
-//	return sum
-//}
-
 func GenerateMoves(sUsedKeySets [][]byte, actionIndex int) [][]byte {
 	//defer timeTrack(time.Now(), "GenerateMoves")
-	skipKeyCount := 0
+	skipKeyCount1 := 0
+	skipKeyCount2 := 0
+	skipKeyCount3 := 0
+	skipKeyCount4 := 0
 	lAllStates := make([][]byte, 0, len(sUsedKeySets))
-	for _, usedKeys := range sUsedKeySets {
+	for ui := 0; ui < len(sUsedKeySets); ui++ {
+		usedKeys := sUsedKeySets[ui]
+
 		nextKeys := make([]byte, len(usedKeys)+1, len(usedKeys)+1)
 		copy(nextKeys, usedKeys)
-		for _, ki := range config.AllBitKeys {
-			if !byteInArray(ki, usedKeys) {
-				nextKeys[len(usedKeys)] = ki
+		for ki := 0; ki < len(config.AllBitKeys); ki++ {
+			keyIndex := config.AllBitKeys[ki]
+
+			if !byteInArray(keyIndex, usedKeys) {
+				nextKeys[len(usedKeys)] = keyIndex
 				aksLen := len(nextKeys)
 				state := nextKeys
-				mod := config.AllKeys[ki].Mod
+				mod := config.AllKeys[keyIndex].Mod
 
 				skipKey := false
+
 				if !skipKey {
-					act, ok := config.FixedModsGroupsIndexed[mod]
-					if ok && intInArray(actionIndex, act) {
+					m, ok := config.FixedModsGroupsIndexed[actionIndex]
+					if ok && mod != m {
 						skipKey = true
-						skipKeyCount++
+						skipKeyCount1++
+						//if actionIndex == 45 && skipKeyCount1 < 50 {
+						//	fmt.Println("skipKeyCount1")
+						//	PrintState(state)
+						//}
 					}
 				}
 				if !skipKey {
 					for gi := 0; gi < len(config.SameKeyGroupsIndexed); gi++ {
-						//for _, group := range config.SameKeyGroupsIndexed {
 						group := config.SameKeyGroupsIndexed[gi]
 						prevKey := "nil"
 						for ai := 0; ai < len(group); ai++ {
-							//for _, ai := range group {
 							action := group[ai]
 							if action < aksLen {
 								key := config.AllKeys[state[action]]
@@ -258,7 +205,7 @@ func GenerateMoves(sUsedKeySets [][]byte, actionIndex int) [][]byte {
 								}
 								if prevKey != k {
 									skipKey = true
-									skipKeyCount++
+									skipKeyCount2++
 									break
 								}
 								prevKey = k
@@ -271,11 +218,9 @@ func GenerateMoves(sUsedKeySets [][]byte, actionIndex int) [][]byte {
 				}
 				if !skipKey {
 					for gi := 0; gi < len(config.DiffKeyGroupsIndexed); gi++ {
-						//for _, group := range config.DiffKeyGroupsIndexed {
 						group := config.DiffKeyGroupsIndexed[gi]
 						diffKeys := make(map[string]struct{})
 						for ai := 0; ai < len(group); ai++ {
-							//for _, ai := range group {
 							action := group[ai]
 							if action < aksLen {
 								key := config.AllKeys[state[action]]
@@ -284,7 +229,7 @@ func GenerateMoves(sUsedKeySets [][]byte, actionIndex int) [][]byte {
 									diffKeys[k] = struct{}{}
 								} else {
 									skipKey = true
-									skipKeyCount++
+									skipKeyCount3++
 									break
 								}
 							}
@@ -297,10 +242,8 @@ func GenerateMoves(sUsedKeySets [][]byte, actionIndex int) [][]byte {
 				if !skipKey {
 					for gi := 0; gi < len(config.SameModGroupsIndexed); gi++ {
 						group := config.SameModGroupsIndexed[gi]
-						//for _, group := range config.SameModGroupsIndexed {
 						prevMod := "nil"
 						for ai := 0; ai < len(group); ai++ {
-							//for _, ai := range group {
 							action := group[ai]
 							if action < aksLen {
 								key := config.AllKeys[state[action]]
@@ -310,7 +253,7 @@ func GenerateMoves(sUsedKeySets [][]byte, actionIndex int) [][]byte {
 								}
 								if prevMod != m {
 									skipKey = true
-									skipKeyCount++
+									skipKeyCount4++
 									break
 								}
 								prevMod = m
@@ -330,7 +273,7 @@ func GenerateMoves(sUsedKeySets [][]byte, actionIndex int) [][]byte {
 			}
 		}
 	}
-	fmt.Println("len(lAllStates):", len(lAllStates), "skipKeyCount: ", skipKeyCount)
+	fmt.Println("len(lAllStates):", len(lAllStates), "skipKeyCount: ", skipKeyCount1, skipKeyCount2, skipKeyCount3, skipKeyCount4)
 	return lAllStates
 }
 
@@ -345,17 +288,18 @@ func CutoffMoves(lAllStates [][]byte, v []int,
 	sort.Sort(sort.IntSlice(scoreVals))
 
 	topScoreVals := scoreVals[intMax(0, len(scoreVals)-topScoreCount):]
-	for _, tS := range topScoreVals {
+	for ti := 0; ti < len(topScoreVals); ti++ {
+		tS := topScoreVals[ti]
 		cutOff := 0
 		for si := 0; si < len(lAllStates); si++ {
 			state := lAllStates[si]
-			//for si, state := range lAllStates {
 			score := v[si]
 			if score == tS {
 				states = append(states, state)
 				if toprint {
 					fmt.Println("Score: ", score)
-					for ai, ki := range state {
+					for ai := 0; ai < len(state); ai++ {
+						ki := state[ai]
 						actName := config.Actions[ai]
 						if actName == "ControlGroupRecall0" ||
 							actName == "ControlGroupAppend0" ||
@@ -404,6 +348,17 @@ func CutoffMoves(lAllStates [][]byte, v []int,
 //	}
 
 //}
+func PrintState(state []byte) {
+	for ai := 0; ai < len(state); ai++ {
+		ki := state[ai]
+		actName := config.Actions[ai]
+		keymod := config.AllKeys[ki]
+		key := keymod.Key
+		mod := keymod.Mod
+		fmt.Print(actName, "(", mod, "+", key, ") ")
+	}
+	fmt.Println("")
+}
 
 func main() {
 	var m runtime.MemStats
@@ -419,7 +374,8 @@ func main() {
 	prevStates := make([][]byte, 1)
 	prevStates[0] = make([]byte, 0, len(config.Actions)+1)
 	lALen := len(config.Actions)
-	for ai, aa := range config.Actions {
+	for ai := 0; ai < lALen; ai++ {
+		aa := config.Actions[ai]
 		sUsedKeySets := prevStates
 		fmt.Println(ai, aa, lALen-1, len(sUsedKeySets))
 
@@ -430,7 +386,8 @@ func main() {
 		}
 		v := make([]int, len(lAllStates))
 		sendCount := 0
-		for si, state := range lAllStates {
+		for si := 0; si < len(lAllStates); si++ {
+			state := lAllStates[si]
 			jobs <- dataJobs{si, state, false}
 			sendCount++
 
@@ -449,21 +406,19 @@ func main() {
 			}
 		}
 		//fmt.Println("            len(results)", len(results), "            len(jobs)   ", len(jobs))
-		//for si, state := range lAllStates {
-		//	fmt.Println(v[si], " === ", state)
-		//}
 		if ai == lALen-1 {
 			prevStates = CutoffMoves(lAllStates, v, 2, 3, true)
-			for _, state := range prevStates {
-				jobs <- dataJobs{0, state, true}
-				_ = <-results
-				fmt.Println("\n---------------------------")
-			}
+			//for _, state := range prevStates {
+			//	jobs <- dataJobs{0, state, true}
+			//	_ = <-results
+			//	fmt.Println("\n---------------------------")
+			//}
 		} else {
-			//prevStates = CutoffMoves(lAllStates, v, lALen-ai/4, 1000+ai*2, false)
-			prevStates = CutoffMoves(lAllStates, v, lALen-ai/4, 1000+ai*2, false)
+			//prevStates = CutoffMoves(lAllStates, v, lALen-ai/4, 5000+ai*20, false)
+			prevStates = CutoffMoves(lAllStates, v, lALen-ai/3, 500+ai*2, false)
 			//prevStates = CutoffMoves(lAllStates, v, 2, 3, true)
 		}
+		fmt.Println("len(prevStates) === ", len(prevStates))
 		//for _, state := range prevStates {
 		//	for _, ki := range state {
 		//		fmt.Print(config.AllKeys[ki])

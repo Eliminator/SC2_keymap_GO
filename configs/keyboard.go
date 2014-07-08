@@ -36,6 +36,25 @@ type Key struct {
 	Key string
 }
 
+type KeyList []Key
+
+func (k KeyList) Len() int {
+	return len(k)
+}
+
+func (k KeyList) Less(i, j int) bool {
+	if k[i].Mod == k[j].Mod {
+		return k[i].Key > k[j].Key
+	} else {
+		return k[i].Mod > k[j].Mod
+	}
+}
+
+func (k KeyList) Swap(i, j int) {
+	k[i].Key, k[j].Key = k[j].Key, k[i].Key
+	k[i].Mod, k[j].Mod = k[j].Mod, k[i].Mod
+}
+
 type FingerFinger struct {
 	Fin1 string
 	Fin2 string
@@ -83,7 +102,7 @@ var SeqOfActionsIndexed [][]int
 var SameModGroupsIndexed [][]int
 var SameKeyGroupsIndexed [][]int
 var DiffKeyGroupsIndexed [][]int
-var FixedModsGroupsIndexed map[string][]int
+var FixedModsGroupsIndexed map[int]string
 
 func init() {
 	//Fin = make([]string)
@@ -150,8 +169,8 @@ func init() {
 	//формируем список клавиш так, чтобы более доступные клавиши шли первыми
 	//TODO: учитывать также и последовательности
 	AllKeys = []Key{}
-	var dWeightKeys map[int][]Key
-	dWeightKeys = make(map[int][]Key)
+	var dWeightKeys map[int]KeyList
+	dWeightKeys = make(map[int]KeyList)
 
 	for sFinKey, iWeight := range FinKeyWeight {
 		val, ok := dWeightKeys[iWeight]
@@ -166,9 +185,13 @@ func init() {
 		weights = append(weights, w)
 	}
 	sort.Sort(sort.Reverse(sort.IntSlice(weights)))
-	for _, w := range weights {
-		for _, k := range dWeightKeys[w] {
-			AllKeys = append(AllKeys, k)
+
+	for wi := 0; wi < len(weights); wi++ {
+		w := weights[wi]
+		keys := dWeightKeys[w]
+		sort.Sort(keys)
+		for ki := 0; ki < len(keys); ki++ {
+			AllKeys = append(AllKeys, keys[ki])
 		}
 	}
 
@@ -248,15 +271,20 @@ func init() {
 		//fmt.Println(si, SameKeyGroupsIndexed[si])
 	}
 
-	FixedModsGroupsIndexed = make(map[string][]int)
+	FixedModsGroupsIndexed = make(map[int]string)
 	for mod, actions := range FixedModsGroups {
-		FixedModsGroupsIndexed[mod] = make([]int, 0)
 		for _, aa := range actions {
 			found := false
 			for lai := 0; lai < len(Actions); lai++ {
 				la := Actions[lai]
 				if la == aa {
-					FixedModsGroupsIndexed[mod] = append(FixedModsGroupsIndexed[mod], lai)
+					_, ok := FixedModsGroupsIndexed[lai]
+					if !ok {
+						FixedModsGroupsIndexed[lai] = mod
+					} else {
+						panic("FixedModsGroups should not contain repeated actions for a mod.")
+					}
+
 					found = true
 					break
 				}
