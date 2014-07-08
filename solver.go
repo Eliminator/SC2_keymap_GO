@@ -243,11 +243,15 @@ func GenerateMoves(sUsedKeySets [][]byte, actionIndex int) [][]byte {
 					}
 				}
 				if !skipKey {
-					for _, group := range config.SameKeyGroupsIndexed {
+					for gi := 0; gi < len(config.SameKeyGroupsIndexed); gi++ {
+						//for _, group := range config.SameKeyGroupsIndexed {
+						group := config.SameKeyGroupsIndexed[gi]
 						prevKey := "nil"
-						for _, ai := range group {
-							if ai < aksLen {
-								key := config.AllKeys[state[ai]]
+						for ai := 0; ai < len(group); ai++ {
+							//for _, ai := range group {
+							action := group[ai]
+							if action < aksLen {
+								key := config.AllKeys[state[action]]
 								k := key.Key
 								if prevKey == "nil" {
 									prevKey = k
@@ -266,11 +270,15 @@ func GenerateMoves(sUsedKeySets [][]byte, actionIndex int) [][]byte {
 					}
 				}
 				if !skipKey {
-					for _, group := range config.DiffKeyGroupsIndexed {
+					for gi := 0; gi < len(config.DiffKeyGroupsIndexed); gi++ {
+						//for _, group := range config.DiffKeyGroupsIndexed {
+						group := config.DiffKeyGroupsIndexed[gi]
 						diffKeys := make(map[string]struct{})
-						for _, ai := range group {
-							if ai < aksLen {
-								key := config.AllKeys[state[ai]]
+						for ai := 0; ai < len(group); ai++ {
+							//for _, ai := range group {
+							action := group[ai]
+							if action < aksLen {
+								key := config.AllKeys[state[action]]
 								k := key.Key
 								if _, ok := diffKeys[k]; !ok {
 									diffKeys[k] = struct{}{}
@@ -287,11 +295,15 @@ func GenerateMoves(sUsedKeySets [][]byte, actionIndex int) [][]byte {
 					}
 				}
 				if !skipKey {
-					for _, group := range config.SameModGroupsIndexed {
+					for gi := 0; gi < len(config.SameModGroupsIndexed); gi++ {
+						group := config.SameModGroupsIndexed[gi]
+						//for _, group := range config.SameModGroupsIndexed {
 						prevMod := "nil"
-						for _, ai := range group {
-							if ai < aksLen {
-								key := config.AllKeys[state[ai]]
+						for ai := 0; ai < len(group); ai++ {
+							//for _, ai := range group {
+							action := group[ai]
+							if action < aksLen {
+								key := config.AllKeys[state[action]]
 								m := key.Mod
 								if prevMod == "nil" {
 									prevMod = m
@@ -335,7 +347,9 @@ func CutoffMoves(lAllStates [][]byte, v []int,
 	topScoreVals := scoreVals[intMax(0, len(scoreVals)-topScoreCount):]
 	for _, tS := range topScoreVals {
 		cutOff := 0
-		for si, state := range lAllStates {
+		for si := 0; si < len(lAllStates); si++ {
+			state := lAllStates[si]
+			//for si, state := range lAllStates {
 			score := v[si]
 			if score == tS {
 				states = append(states, state)
@@ -411,7 +425,7 @@ func main() {
 
 		lAllStates := GenerateMoves(sUsedKeySets, ai)
 		if len(lAllStates) == 0 {
-			fmt.Println("Out of keys!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+			panic("Out of keys!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
 			break
 		}
 		v := make([]int, len(lAllStates))

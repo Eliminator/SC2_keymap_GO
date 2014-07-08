@@ -194,7 +194,8 @@ func init() {
 		SeqOfActionsIndexed[si] = make([]int, len(seq))
 		for ai, aa := range seq {
 			found := false
-			for lai, la := range Actions {
+			for lai := 0; lai < len(Actions); lai++ {
+				la := Actions[lai]
 				if la == aa {
 					SeqOfActionsIndexed[si][ai] = lai
 					found = true
@@ -213,7 +214,8 @@ func init() {
 		SameModGroupsIndexed[si] = make([]int, len(seq))
 		for ai, aa := range seq {
 			found := false
-			for lai, la := range Actions {
+			for lai := 0; lai < len(Actions); lai++ {
+				la := Actions[lai]
 				if la == aa {
 					SameModGroupsIndexed[si][ai] = lai
 					found = true
@@ -231,7 +233,8 @@ func init() {
 		SameKeyGroupsIndexed[si] = make([]int, len(seq))
 		for ai, aa := range seq {
 			found := false
-			for lai, la := range Actions {
+			for lai := 0; lai < len(Actions); lai++ {
+				la := Actions[lai]
 				if la == aa {
 					SameKeyGroupsIndexed[si][ai] = lai
 					found = true
@@ -250,7 +253,8 @@ func init() {
 		FixedModsGroupsIndexed[mod] = make([]int, 0)
 		for _, aa := range actions {
 			found := false
-			for lai, la := range Actions {
+			for lai := 0; lai < len(Actions); lai++ {
+				la := Actions[lai]
 				if la == aa {
 					FixedModsGroupsIndexed[mod] = append(FixedModsGroupsIndexed[mod], lai)
 					found = true
@@ -269,7 +273,8 @@ func init() {
 		DiffKeyGroupsIndexed[si] = make([]int, len(seq))
 		for ai, aa := range seq {
 			found := false
-			for lai, la := range Actions {
+			for lai := 0; lai < len(Actions); lai++ {
+				la := Actions[lai]
 				if la == aa {
 					DiffKeyGroupsIndexed[si][ai] = lai
 					found = true
