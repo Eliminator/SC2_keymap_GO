@@ -236,12 +236,10 @@ func GenerateMoves(sUsedKeySets [][]byte, actionIndex int) [][]byte {
 
 				skipKey := false
 				if !skipKey {
-					for m, act := range config.FixedModsGroupsIndexed {
-						if intInArray(actionIndex, act) && m != mod {
-							skipKey = true
-							skipKeyCount++
-							break
-						}
+					act, ok := config.FixedModsGroupsIndexed[mod]
+					if ok && intInArray(actionIndex, act) {
+						skipKey = true
+						skipKeyCount++
 					}
 				}
 				if !skipKey {
@@ -400,7 +398,7 @@ func main() {
 	results := make(chan dataResults, 1000)
 	jobs := make(chan dataJobs, 1000)
 
-	for w := 1; w <= 1; /*runtime.NumCPU()*2*/ w++ {
+	for w := 1; w <= runtime.NumCPU(); /*runtime.NumCPU()*2*/ w++ {
 		go Evaluate(w, jobs, results)
 	}
 
@@ -448,6 +446,7 @@ func main() {
 				fmt.Println("\n---------------------------")
 			}
 		} else {
+			//prevStates = CutoffMoves(lAllStates, v, lALen-ai/4, 1000+ai*2, false)
 			prevStates = CutoffMoves(lAllStates, v, lALen-ai/4, 1000+ai*2, false)
 			//prevStates = CutoffMoves(lAllStates, v, 2, 3, true)
 		}
