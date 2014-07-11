@@ -61,7 +61,7 @@
 	"Actions": [
         "Attack",
         "BurrowUp",
-        "Baneling",
+        "FungalGrowth/Infestor",
         "BuildCreepTumor",
         "MoveHoldPosition",
         "ControlGroupRecall0",
@@ -162,14 +162,14 @@
             "ControlGroupAssign9"
         ],
         "no": [
-		    "Attack",
+	    "Attack",
             "MoveHoldPosition",
             "MovePatrol",
             "Stop",
             "Cancel",
             "BurrowDown",
             "BurrowUp",
-            "Baneling",
+            "FungalGrowth/Infestor",
             "BuildCreepTumor",
             "ArmySelect",
             "ControlGroupRecall0",
@@ -207,7 +207,7 @@
             "Attack",
             "BurrowDown",
             "BurrowUp",
-            "Baneling",
+            "FungalGrowth/Infestor",
             "BuildCreepTumor"
         ],
         [
@@ -341,14 +341,14 @@
             "CameraView3",
             "CameraView4",
             "CameraView5",
-		    "Attack",
+            "Attack",
             "MoveHoldPosition",
             "MovePatrol",
             "Stop",
             "Cancel",
             "BurrowDown",
             "BurrowUp",
-            "Baneling",
+            "FungalGrowth/Infestor",
             "BuildCreepTumor"
         ],
 		[
@@ -358,14 +358,14 @@
             "CameraSave3",
             "CameraSave4",
             "CameraSave5",
-		    "Attack",
+            "Attack",
             "MoveHoldPosition",
             "MovePatrol",
             "Stop",
             "Cancel",
             "BurrowDown",
             "BurrowUp",
-            "Baneling",
+            "FungalGrowth/Infestor",
             "BuildCreepTumor"
         ],
         [
@@ -391,16 +391,16 @@
     ],
 	"SeqOfActions": [
         [
-            "ControlGroupRecall3", "Attack", "ControlGroupRecall4", "BuildCreepTumor"
+            "ControlGroupRecall3", "Attack", "ControlGroupRecall4", "FungalGrowth/Infestor"
         ],
         [
-            "ControlGroupRecall4", "BuildCreepTumor", "ControlGroupRecall3", "Attack"
+            "ControlGroupRecall4", "FungalGrowth/Infestor", "ControlGroupRecall3", "Attack"
         ],
         [
-            "ControlGroupRecall5", "Attack", "ControlGroupRecall6", "BuildCreepTumor"
+            "ControlGroupRecall5", "Attack", "ControlGroupRecall6", "FungalGrowth/Infestor"
         ],
         [
-            "ControlGroupRecall6", "BuildCreepTumor", "ControlGroupRecall5", "Attack"
+            "ControlGroupRecall6", "FungalGrowth/Infestor", "ControlGroupRecall5", "Attack"
         ],
         [
             "ControlGroupRecall3", "Attack", "ControlGroupRecall5", "Attack"
@@ -412,7 +412,7 @@
             "ControlGroupRecall4", "BurrowUp", "Attack", "BurrowDown"
         ],
         [
-            "ControlGroupRecall6", "BurrowUp", "BuildCreepTumor", "BurrowDown"
+            "ControlGroupRecall6", "BurrowUp", "FungalGrowth/Infestor", "BurrowDown"
         ],
         [
             "CameraView6", "BuildCreepTumor", "CameraSave6", "ControlGroupRecall3"

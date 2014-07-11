@@ -70,6 +70,7 @@
         "CameraView1": "CameraView1",
         "ControlGroupAssign3": "ControlGroupAssign3",
         "MovePatrol": "Patrol",
-        "ControlGroupAssign2": "ControlGroupAssign2"
+        "ControlGroupAssign2": "ControlGroupAssign2",
+	"FungalGrowth/Infestor":"fungal_growth"
     }
 }

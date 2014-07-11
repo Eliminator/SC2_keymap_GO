@@ -2,84 +2,20 @@ package main
 
 import (
 	config "./configs"
+	misc "./misc"
 	svg "./svgdraw"
 	"fmt"
 	"runtime"
 	"sort"
-	"time"
 )
 
 /*
 TODO:
 - print action sequences in term of keys
-
+- check configs integrity
+- custom memory managment for states
+- rename to state in all functions
 */
-
-func timeTrack(start time.Time, name string) {
-	elapsed := time.Since(start)
-	fmt.Printf("%s took %s\n", name, elapsed)
-}
-
-func UniqInt(col []int) []int {
-	m := map[int]struct{}{}
-	for _, v := range col {
-		if _, ok := m[v]; !ok {
-			m[v] = struct{}{}
-		}
-	}
-	list := make([]int, len(m))
-
-	i := 0
-	for v := range m {
-		list[i] = v
-		i++
-	}
-	return list
-}
-
-func intMin(a int, b int) int {
-	if a > b {
-		return b
-	} else {
-		return a
-	}
-
-}
-func intMax(a int, b int) int {
-	if a < b {
-		return b
-	} else {
-		return a
-	}
-
-}
-
-func keyInArray(a config.Key, arr []config.Key) bool {
-	for _, b := range arr {
-		if b == a {
-			return true
-		}
-	}
-	return false
-}
-
-func intInArray(a int, arr []int) bool {
-	for _, b := range arr {
-		if b == a {
-			return true
-		}
-	}
-	return false
-}
-
-func byteInArray(a byte, arr []byte) bool {
-	for _, b := range arr {
-		if b == a {
-			return true
-		}
-	}
-	return false
-}
 
 type dataJobs struct {
 	i       int
@@ -172,7 +108,7 @@ func GenerateMoves(sUsedKeySets [][]byte, actionIndex int) [][]byte {
 		for ki := 0; ki < len(config.AllBitKeys); ki++ {
 			keyIndex := config.AllBitKeys[ki]
 
-			if !byteInArray(keyIndex, usedKeys) {
+			if !misc.ByteInArray(keyIndex, usedKeys) {
 				nextKeys[len(usedKeys)] = keyIndex
 				aksLen := len(nextKeys)
 				state := nextKeys
@@ -283,11 +219,11 @@ func CutoffMoves(lAllStates [][]byte, v []int,
 
 	states := make([][]byte, 0, len(lAllStates))
 
-	scoreVals := UniqInt(v)
+	scoreVals := misc.UniqInt(v)
 
 	sort.Sort(sort.IntSlice(scoreVals))
 
-	topScoreVals := scoreVals[intMax(0, len(scoreVals)-topScoreCount):]
+	topScoreVals := scoreVals[misc.IntMax(0, len(scoreVals)-topScoreCount):]
 	for ti := 0; ti < len(topScoreVals); ti++ {
 		tS := topScoreVals[ti]
 		cutOff := 0
@@ -324,30 +260,6 @@ func CutoffMoves(lAllStates [][]byte, v []int,
 	return states
 }
 
-//func main() {
-//	config.Init()
-
-//	prevStates := make([][]config.Key, 1)
-//	prevStates[0] = make([]config.Key, 0, len(config.Actions)+1)
-
-//	lALen := len(config.Actions)
-//	for ai, aa := range config.Actions {
-//		sUsedKeySets := prevStates
-//		fmt.Println(ai, aa, lALen-1, len(sUsedKeySets))
-
-//		lAllStates := GenerateMoves(sUsedKeySets, ai)
-//		if len(lAllStates) == 0 {
-//			fmt.Println("Out of keys!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-//			break
-//		}
-//		v := make([]int, len(lAllStates))
-//		for si, state := range lAllStates {
-//			v[si] = Evaluate(state)
-//		}
-//		prevStates = CutoffMoves(lAllStates, v, 10, 5000)
-//	}
-
-//}
 func PrintState(state []byte) {
 	for ai := 0; ai < len(state); ai++ {
 		ki := state[ai]
@@ -414,8 +326,8 @@ func main() {
 			//	fmt.Println("\n---------------------------")
 			//}
 		} else {
-			//prevStates = CutoffMoves(lAllStates, v, lALen-ai/4, 5000+ai*20, false)
-			prevStates = CutoffMoves(lAllStates, v, lALen-ai/3, 500+ai*2, false)
+			//prevStates = CutoffMoves(lAllStates, v, lALen-ai/5, 10000+ai*20, false)
+			prevStates = CutoffMoves(lAllStates, v, lALen-ai/3, 50+ai*2, false)
 			//prevStates = CutoffMoves(lAllStates, v, 2, 3, true)
 		}
 		fmt.Println("len(prevStates) === ", len(prevStates))
@@ -434,9 +346,27 @@ func main() {
 	}
 	close(jobs)
 
+	bestState := prevStates[len(prevStates)-1]
+	for si := 0; si < len(config.SeqOfActionsIndexed); si++ {
+		seq := config.SeqOfActionsIndexed[si]
+		seqActions := make([]string, 0, len(seq))
+		seqKeys := make([]config.Key, 0, len(seq))
+		for ai := 0; ai < len(seq); ai++ {
+			action := seq[ai]
+			actName := config.Actions[action]
+			key := config.AllKeys[bestState[action]]
+			//f := config.KeyFinger[key]
+			seqActions = append(seqActions, actName)
+			seqKeys = append(seqKeys, key)
+		}
+		fmt.Println(seqActions)
+		fmt.Println(seqKeys)
+
+	}
+
 	for _, m := range config.AllMods {
 		keyAction := make(map[string]string)
-		for ai, ki := range prevStates[len(prevStates)-1] {
+		for ai, ki := range bestState {
 			actName := config.Actions[ai]
 			keymod := config.AllKeys[ki]
 			key := keymod.Key
