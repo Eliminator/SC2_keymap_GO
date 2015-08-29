@@ -11,15 +11,15 @@ import (
 
 /*
 TODO:
-- print action sequences in term of keys
-- check configs integrity
 - custom memory managment for states
+- check configs integrity
 - rename to state in all functions
++ print action sequences in term of keys
 */
 
 type dataJobs struct {
 	i       int
-	val     []byte
+	val     *[]byte
 	explain bool
 }
 
@@ -30,7 +30,7 @@ type dataResults struct {
 
 func Evaluate(id int, jobs <-chan dataJobs, results chan<- dataResults) {
 	for j := range jobs {
-		lActKeysState := j.val
+		lActKeysState := *(j.val)
 		explain := j.explain
 		sum := 0
 		aksLen := len(lActKeysState)
@@ -75,16 +75,10 @@ func Evaluate(id int, jobs <-chan dataJobs, results chan<- dataResults) {
 					prevFinger = f
 
 					sum = sum + iRepScore
-					//if aksLen == 2 && (key.Key == "F" || key.Key == "D") {
-					//	fmt.Println(sum, iFingerScore, iRepScore)
-					//}
 				} else {
 					prevFinger = config.Finger("nil")
 				}
 			}
-
-			//fmt.Println(seq, prevFinger)
-
 		}
 		if explain {
 			fmt.Println("ater SeqOfActions sum = ", sum)
@@ -94,7 +88,7 @@ func Evaluate(id int, jobs <-chan dataJobs, results chan<- dataResults) {
 }
 
 func GenerateMoves(sUsedKeySets [][]byte, actionIndex int) [][]byte {
-	//defer timeTrack(time.Now(), "GenerateMoves")
+	//defer misc.TimeTrack(time.Now(), "GenerateMoves")
 	skipKeyCount1 := 0
 	skipKeyCount2 := 0
 	skipKeyCount3 := 0
@@ -121,10 +115,6 @@ func GenerateMoves(sUsedKeySets [][]byte, actionIndex int) [][]byte {
 					if ok && mod != m {
 						skipKey = true
 						skipKeyCount1++
-						//if actionIndex == 45 && skipKeyCount1 < 50 {
-						//	fmt.Println("skipKeyCount1")
-						//	PrintState(state)
-						//}
 					}
 				}
 				if !skipKey {
@@ -215,7 +205,7 @@ func GenerateMoves(sUsedKeySets [][]byte, actionIndex int) [][]byte {
 
 func CutoffMoves(lAllStates [][]byte, v []int,
 	topScoreCount int, cutOffNum int, toprint bool) [][]byte {
-	//defer timeTrack(time.Now(), "CutoffMoves")
+	//defer misc.TimeTrack(time.Now(), "CutoffMoves")
 
 	states := make([][]byte, 0, len(lAllStates))
 
@@ -273,6 +263,7 @@ func PrintState(state []byte) {
 }
 
 func main() {
+
 	var m runtime.MemStats
 	runtime.GOMAXPROCS(runtime.NumCPU())
 	//return
@@ -300,7 +291,7 @@ func main() {
 		sendCount := 0
 		for si := 0; si < len(lAllStates); si++ {
 			state := lAllStates[si]
-			jobs <- dataJobs{si, state, false}
+			jobs <- dataJobs{si, &state, false}
 			sendCount++
 
 			if sendCount > 500 {
